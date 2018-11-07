@@ -69,3 +69,4 @@ def export_obj_with(obj_to_export, file_path, hash_method, d_export_func):
         ##print >> hash_file_object, checksum_from_file(file_path, hash_method)			## python2.7
         ##print(checksum_from_file(file_path, hash_method), file=hash_file_object)		## python3.5
         hash_file_object.write(checksum_from_file(file_path, hash_method))
+    return True
