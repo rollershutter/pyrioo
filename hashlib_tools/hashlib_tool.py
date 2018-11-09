@@ -11,21 +11,32 @@
 #  Copyright 2018 sebastian rollershutter
 ##
 import hashlib
+from hashlib_tools.error_classes import VerbosErr
 fallback_message = "select_hashlib - _hash_method_from(method_string): " \
                  + "error\ncalled with: %s - fallback to: %s!"
-from hashlib_tools.error_classes import VerbosErr
 
 
 ####
-def hashmethod_short(hash_method):
+def method_short(hash_method):
+    """Get method-short-name from given hashlib-method.
+    :param: hash_method (hashlib-method): hashlib-module to get the short-name from
+    :return: str: short-name of given hashlib-method
+    """
     return hash_method.__name__[8::].lower()
 
-def _hash_method_from(method_string):
+
+def _method_from(method_string):
+    """Get a hashlib-method from a given name string.
+     defaults to fallback_method: hashlib.md5
+
+    :param method_string (str):
+    :return: hashlib-method: hashlib-method, hashlib.md5 if no method found from given method_string
+    """
     fallback_method = hashlib.md5
     try:
         hash_method = getattr(hashlib, method_string.lower())
     except: # (AttributeError, TypeError):
-        print(fallback_message % (method_string, hashmethod_short(fallback_method)))
+        print(fallback_message % (method_string, method_short(fallback_method)))
         hash_method = fallback_method
     #except TypeError:
     #   hash_method = fallback_method
@@ -34,7 +45,7 @@ def _hash_method_from(method_string):
 
 
 #######################################################################
-#### testing when this module is being called directly
+# testing when this module is being called directly
 def main(args):
     print(dir(hashlib))
 
@@ -48,12 +59,13 @@ def main(args):
 
     print("\ntesting:\n{0}\nexpecting:\n{1}\n".format(method_strings,expected_methods))
     for s, em in zip(method_strings, expected_methods): #method_strings:
-        m = _hash_method_from(s)
+        m = _method_from(s)
         print( "s: {0}\n  hash-method: {1}".format(s, m) )
         if not m == em:
             raise VerbosErr(m, "test failed: expected {0}, got {1}".format(em, m))
     print("tests passed successfully.")
     return 0
+
 
 ####
 if __name__ == '__main__':
