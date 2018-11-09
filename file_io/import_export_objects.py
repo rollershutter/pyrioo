@@ -12,7 +12,7 @@
 ##
 import json
 import pickle
-from hashlib_tools.check_file import hashmethod_hashfile_from, checksum_from_file_with  # _checksum_from_file
+from hashlib_tools.check_file import _hashfile_from, checksum_from_file_with  #hashmethod_hashfile_from, checksum_from_file_with  # _checksum_from_file
 
 
 ####
@@ -41,7 +41,8 @@ def write_json(obj_to_export, file_path):
 
 ##
 def import_obj_with(file_path, hash_method_str, d_import_func):
-    hash_method, hash_file = hashmethod_hashfile_from(file_path, hash_method_str)
+    #hash_method, hash_file = hashmethod_hashfile_from(file_path, hash_method_str)
+    hash_file = _hashfile_from()
     try:
         hash_f = open(hash_file, 'r')
         my_hash = hash_f.read()

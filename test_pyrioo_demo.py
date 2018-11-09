@@ -30,6 +30,8 @@ class TestObject():
         creates dict from a given TestObject-object.
         :return TestObject instance
         """
+        if not isinstance(obj, TestObject):
+            raise ValueError("cannot compare object: not of type TestObject.")  # return False
         return {'c_id': obj.c_id,
                 'created_time': obj.created_time,
                 'status': obj.status,
@@ -37,6 +39,28 @@ class TestObject():
 
     def to_dict(self):
         return self._obj_to_dict(self)
+
+    @staticmethod
+    def object_from_dict(d):
+        """
+        creates TestObject-object from a given, suitable dict.
+        :return TestObject instance
+        """
+        if not isinstance(d, dict):
+            raise ValueError("argument not of type dict.")
+        elif "c_id" not in d:  # getattr(d, "c_id"):
+            raise ValueError("dict: no key: \"c_id\".")  # return False
+        obj = TestObject(d["c_id"])
+        if "created_time" in d:
+            obj.created_time = d["created_time"]
+        if "dict_items" in d:
+            obj.dict_items = d["dict_items"]
+        if "status" in d:
+            obj.status = d["status"]
+        return obj
+
+    #def from_dict(self, d):
+    #    return self._object_from_dict(d)
 
     #def __cmp__(self):
     #    pass
@@ -76,7 +100,7 @@ class Test():
     @staticmethod
     def _dict_from_object(obj):
         """
-        creates dict from a given TestObject-object.
+        Return dict from a given TestObject-object.
         :return TestObject instance
         """
         #return {'c_id': obj.c_id,
@@ -91,14 +115,15 @@ class Test():
         creates TestObject-object from a given, suitable dict.
         :return TestObject instance
         """
-        obj = TestObject(d["c_id"])
-        if "created_time" in d:
-            obj.created_time = d["created_time"]
-        if "dict_items" in d:
-            obj.dict_items = d["dict_items"]
-        if "status" in d:
-            obj.status = d["status"]
-        return obj
+        #obj = TestObject(d["c_id"])
+        #if "created_time" in d:
+        #    obj.created_time = d["created_time"]
+        #if "dict_items" in d:
+        #    obj.dict_items = d["dict_items"]
+        #if "status" in d:
+        #    obj.status = d["status"]
+        #return obj
+        return TestObject.object_from_dict(d)  # _.from_dict(d)
 
     def _objects_from_dicts(self, dict_list):
         _list = []

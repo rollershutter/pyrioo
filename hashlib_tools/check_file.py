@@ -84,6 +84,16 @@ def checksum_from_file_with(file_name, method_string):
     """
     return _checksum_from_file(file_name, _method_from(method_string))
 
+def save_checksum_from_file_with(file_name, method_string):
+    """Get hashlib-method from method_string and return checksum from given file.
+    Args:
+        file_name (str): file-name to get checksum from
+        method_string (str): name of desired hashlib-method to get checksum of given file
+    Returns:
+        str: hash/checksum of given file in file_name as hexdigest-string
+    """
+    return _checksum_from_file(file_name, _method_from(method_string))
+
 
 #######################################################################
 #### testing when this module is being called directly
