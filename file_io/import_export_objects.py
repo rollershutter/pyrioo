@@ -12,8 +12,10 @@
 ##
 import json
 import pickle
-from hashlib_tools.check_file import checksum_from_file_with, _method_from, \
-    method_short  # _hashfile_from, checksum_from_file_with  #hashmethod_hashfile_from, checksum_from_file_with  # _checksum_from_file
+from hashlib_tools.check_file import checksum_from_file_with, _method_from  #, method_short
+# _hashfile_from, checksum_from_file_with  #hashmethod_hashfile_from, checksum_from_file_with  # _checksum_from_file
+from hashlib_tools.hashlib_tool import method_short
+
 
 ####
 IO_DEBUG = False  # True
@@ -45,14 +47,11 @@ def write_json(obj_to_export, file_path):
 
 ##
 def import_obj_with(file_path, hash_method_str, d_import_func):
-    # hash_method, hash_file = hashmethod_hashfile_from(file_path, hash_method_str)
     hash_file = _hashfile_from(file_path, _method_from(hash_method_str))
     try:
         hash_f = open(hash_file, 'r')
         my_hash = hash_f.read()
-        # if not my_hash.rstrip().endswith(_checksum_from_file(file_path, hash_method)):                                   # python3: checksum_from_file().encode() returns bytestring - removed encode
-        if not my_hash.rstrip().endswith(checksum_from_file_with(file_path,
-                                                                 hash_method_str)):  # python3: checksum_from_file().encode() returns bytestring - removed encode
+        if not my_hash.rstrip().endswith(checksum_from_file_with(file_path, hash_method_str)):  # python3: checksum_from_file().encode() returns bytestring - removed encode
             if IO_DEBUG:
                 print('checksum not correct!')
             return
@@ -90,27 +89,6 @@ def _hashfile_from(file_name, hash_method):
     return '%s.%s' % (name, ext)
 
 
-# def hashmethod_hashfile_from(file_name, hash_method_string):
-#     #"""
-#     #
-#     #:param file_name:
-#     #:param hash_method_string:
-#     #:return:
-#     #"""
-#     """
-#
-#     Args:
-#         file_name (str): file-name of file to get a checksum from.
-#         hash_method_string (str): hash-method short-name string to get a hashlib-hash-method
-#     Returns:
-#         hashlib hash-method: hash-method to use for hashing given file in file_name
-#         str: file-name to save the checksum of given file in file_name
-#     """
-#     hash_method = _method_from(hash_method_string)
-#     file_name = _hashfile_from(file_name, hash_method) #'%s.%s' % ('_'.join(file_name.split('.')), str(hash_method.__name__)[8::]) #,hash_method.lower)
-#     return hash_method, file_name
-
-
 def save_checksum_from_file_with(file_name, method_string):
     """Get hashlib-method from method_string and return checksum from given file.
     Args:
@@ -119,14 +97,11 @@ def save_checksum_from_file_with(file_name, method_string):
     Returns:
         str: hash/checksum of given file in file_name as hexdigest-string
     """
-    # return _checksum_from_file(file_name, _method_from(method_string))
-    # hash_method, hash_file_name = hashmethod_hashfile_from(file_path, hash_method_str)
     hash_file_name = _hashfile_from(file_name, _method_from(method_string))
 
     with open(hash_file_name, 'w') as hash_file_object:
         ##print >> hash_file_object, checksum_from_file(file_path, hash_method)			## python2.7
         ##print(checksum_from_file(file_path, hash_method), file=hash_file_object)		## python3.5
-        # hash_file_object.write(_checksum_from_file(file_path, hash_method))
         hash_file_object.write(checksum_from_file_with(file_name, method_string))
 
 
