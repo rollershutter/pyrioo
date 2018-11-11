@@ -31,7 +31,7 @@ class TestObject():
         :return TestObject instance
         """
         if not isinstance(obj, TestObject):
-            raise ValueError("cannot compare object: not of type TestObject.")  # return False
+            raise ValueError("cannot create dict: not of type TestObject.")  # return False
         return {'c_id': obj.c_id,
                 'created_time': obj.created_time,
                 'status': obj.status,
@@ -59,10 +59,10 @@ class TestObject():
             obj.status = d["status"]
         return obj
 
-    #def from_dict(self, d):
+    # def from_dict(self, d):
     #    return self._object_from_dict(d)
 
-    #def __cmp__(self):
+    # def __cmp__(self):
     #    pass
 
     def __eq__(self, other):
@@ -75,12 +75,13 @@ class TestObject():
 
     def __str__(self):
         return "{}: id: {}, created: {}, status: {}\n dict_items: {}" \
-                .format(
-                        self.__class__.__name__,
-                        self.c_id,
-                        self.created_time,
-                        self.status,
-                        self.dict_items)
+            .format(
+                    self.__class__.__name__,
+                    self.c_id,
+                    self.created_time,
+                    self.status,
+                    self.dict_items)
+
 
 ##
 class Test():
@@ -101,28 +102,19 @@ class Test():
     def _dict_from_object(obj):
         """
         Return dict from a given TestObject-object.
-        :return TestObject instance
+        Args:
+            obj (TestObject): TestObject instance
+        Returns:
+            dict: dict representation of given TestObject-object
         """
-        #return {'c_id': obj.c_id,
-        #        'created_time': obj.created_time,
-        #        'status': obj.status,
-        #        'dict_items': obj.dict_items}
         return obj.to_dict()
 
     @staticmethod
     def _object_from_dict(d):
         """
-        creates TestObject-object from a given, suitable dict.
+        Return TestObject-object from a given, suitable dict.
         :return TestObject instance
         """
-        #obj = TestObject(d["c_id"])
-        #if "created_time" in d:
-        #    obj.created_time = d["created_time"]
-        #if "dict_items" in d:
-        #    obj.dict_items = d["dict_items"]
-        #if "status" in d:
-        #    obj.status = d["status"]
-        #return obj
         return TestObject.object_from_dict(d)  # _.from_dict(d)
 
     def _objects_from_dicts(self, dict_list):
@@ -132,7 +124,6 @@ class Test():
             _list.append(_item)
         return _list
 
-    ##
     def load_from_file(self):
         _list = import_obj_with(Test.file_name, 'sha256', read_json)
         if _list:
@@ -145,7 +136,7 @@ class Test():
 
     ##
     def save_to_file(self):
-        #_list = [{'c_id': p.c_id, 'created_time': p.created_time, 'status': p.status, 'dict_items': p.dict_items} for p in Test.test_list]
+        # _list = [{'c_id': p.c_id, 'created_time': p.created_time, 'status': p.status, 'dict_items': p.dict_items} for p in Test.test_list]
         _list = [p.to_dict() for p in Test.test_list]
         print("saving to file({}):".format(len(Test.test_list)))
 
@@ -161,19 +152,20 @@ class Test():
 
 ####
 def main(args):
-    #file_io.import_export_objects.IO_DEBUG = False
+    # file_io.import_export_objects.IO_DEBUG = False
     file_io.import_export_objects.IO_DEBUG = True  # False
 
     for save_file, load_file in ((False, True), (True, False)):
-        #save_file = False  # True  # False
+        # save_file = False  # True  # False
         if len(args) > 1:
             save_file = args[1]
 
-        print("#"*24, "testing import/export python objects:", sep="\n")
+        print("#" * 24, "testing import/export python objects:", sep="\n")
         tt = Test(load_file)  # True)  # False)  # (True)
 
         if save_file:
-            my_list = [TestObject("test-1-2-3"), TestObject("another-4-5-6", {'1': 912.34, '2': 345.67}, 2), TestObject("dididnanana-7-8-9", {'1': 1234.56, '2': 456.78, '3': 789.12}, 1)]
+            my_list = [TestObject("test-1-2-3"), TestObject("another-4-5-6", {'1': 912.34, '2': 345.67}, 2),
+                       TestObject("dididnanana-7-8-9", {'1': 1234.56, '2': 456.78, '3': 789.12}, 1)]
             Test.test_list = my_list
             tt.save_to_file()
 
@@ -184,19 +176,21 @@ def main(args):
             print(l.__class__.__name__, hex(id(l)), len(l))
 
         try:
-            #assert(all((tt.test_list == tt_old, Test.test_list == tt_old, Test.test_list == tt.test_list)))
-            assert(tt.test_list == tt_old == Test.test_list)
-            #print(list(zip([1, 2, 3], [4, 5, 6])))
-            #print([a == b for a, b in list(zip(tt_old, tt.test_list))])
-            assert(all(a == b for a, b in list(zip(tt_old, tt.test_list))))
-            #assert(all(tt.test_list == tt_old))
+            # assert(all((tt.test_list == tt_old, Test.test_list == tt_old, Test.test_list == tt.test_list)))
+            assert (tt.test_list == tt_old == Test.test_list)
+            # print(list(zip([1, 2, 3], [4, 5, 6])))
+            # print([a == b for a, b in list(zip(tt_old, tt.test_list))])
+            assert (all(a == b for a, b in list(zip(tt_old, tt.test_list))))
+            # assert(all(tt.test_list == tt_old))
             print("tests passed.\n")
         except:
             print("tests failed!\n")
 
     print("\nbye.")
 
+
 ##
 if __name__ == '__main__':
     import sys
+
     sys.exit(main(sys.argv))

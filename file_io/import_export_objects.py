@@ -12,7 +12,7 @@
 ##
 import json
 import pickle
-from hashlib_tools.check_file import checksum_from_file_with, _method_from  # , method_short
+from hashlib_tools.check_file import checksum_from_file_with, method_from  # , method_short
 # _hashfile_from, checksum_from_file_with  #hashmethod_hashfile_from, checksum_from_file_with  # _checksum_from_file
 from hashlib_tools.hashlib_tool import method_short
 
@@ -22,35 +22,62 @@ IO_DEBUG = False  # True
 
 ## delegates read/write json/pickle
 def read_pickle(file_name):
+    """
+    Reads a pickled file with pickle module.
+    Args:
+        file_name: file to read obj from
+    Return:
+        <pickled object>: object from pickled file
+    """
     with open(file_name, 'rb') as file_object_b:
         out = pickle.load(file_object_b)
     return out
 
 
 def read_json(file_name):
+    """
+    Reads a json file with json module.
+    Args:
+        file_name: file to read obj from
+    Return:
+        <jsonified object>: json object representation
+    """
     with open(file_name, 'r') as file_object:
         out = json.loads(file_object.read())
+        print(out, type(out))
     return out
 
 
-def write_pickle(obj_to_export, file_path):
+def write_pickle(obj_to_export, file_name):
+    """
+    Serialize given obj in obj_to_export to file given in file_path.
+    Args:
+        obj_to_export: object to export
+        file_name: file to write obj to
+    """
     prot = 0
-    with open(file_path, 'wb') as file_object:
+    with open(file_name, 'wb') as file_object:
         pickle.dump(obj_to_export, file_object, prot)
 
 
-def write_json(obj_to_export, file_path):
-    with open(file_path, 'w') as file_object:
+def write_json(obj_to_export, file_name):
+    """
+    Write json representation of object to file.
+    Args:
+        obj_to_export: object to export
+        file_name: file to write obj to
+    """
+    with open(file_name, 'w') as file_object:
         file_object.write(json.dumps(obj_to_export))
 
 
 ##
-def import_obj_with(file_path, hash_method_str, d_import_func):
-    hash_file = _hashfile_from(file_path, _method_from(hash_method_str))
+def import_obj_with(file_name, hash_method_str, d_import_func):
+    hash_file = _hashfile_from(file_name, method_from(hash_method_str))
     try:
         hash_f = open(hash_file, 'r')
         my_hash = hash_f.read()
-        if not my_hash.rstrip().endswith(checksum_from_file_with(file_path,
+        if not my_hash.rstrip().endswith(checksum_from_file_with(file_name,
                                                                  hash_method_str)):  # python3: checksum_from_file().encode() returns bytestring - removed encode
             if IO_DEBUG:
                 print('checksum not correct!')
@@ -59,11 +86,11 @@ def import_obj_with(file_path, hash_method_str, d_import_func):
         if IO_DEBUG:
             print('checksum correct! -> importing')
         try:
-            loaded_obj = d_import_func(file_path)
+            loaded_obj = d_import_func(file_name)
             return loaded_obj
         except FileNotFoundError:
             if IO_DEBUG:
-                print('file: %s not found...' % file_path)
+                print('file: %s not found...' % file_name)
     # except TypeError:
     #	byte needed, not string
     # except Error as err:
@@ -97,7 +124,7 @@ def save_checksum_from_file_with(file_name, method_string):
     Returns:
         bool: True if checksum written to file
     """
-    hash_file_name = _hashfile_from(file_name, _method_from(method_string))
+    hash_file_name = _hashfile_from(file_name, method_from(method_string))
 
     with open(hash_file_name, 'w') as hash_file_object:
         ##print >> hash_file_object, checksum_from_file(file_path, hash_method)			## python2.7

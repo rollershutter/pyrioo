@@ -18,19 +18,23 @@ fallback_message = "select_hashlib - _hash_method_from(method_string): " \
 
 ####
 def method_short(hash_method):
-    """Get method-short-name from given hashlib-method.
-    :param: hash_method (hashlib-method): hashlib-module to get the short-name from
-    :return: str: short-name of given hashlib-method
+    """Get method-short-name from given hashlib-method __name__ attribute.
+    Args:
+        hash_method (hashlib-method): hashlib-module to get the short-name from
+    Return:
+        str: short-name of given hashlib-method
     """
     return hash_method.__name__[8::].lower()
 
 
-def _method_from(method_string):
+def method_from(method_string):
     """Get a hashlib-method from a given name string.
      defaults to fallback_method: hashlib.md5
 
-    :param method_string (str):
-    :return: hashlib-method: hashlib-method, hashlib.md5 if no method found from given method_string
+    Args:
+        method_string (str):
+    Return:
+        hashlib-method: hashlib-method, hashlib.md5 if no method found from given method_string
     """
     fallback_method = hashlib.md5
     try:
@@ -62,7 +66,7 @@ def main(args):
 
     print("\ntesting:\n{0}\nexpecting:\n{1}\n".format(method_strings,expected_methods))
     for s, em in zip(method_strings, expected_methods): #method_strings:
-        m = _method_from(s)
+        m = method_from(s)
         print( "s: {0}\n  hash-method: {1}".format(s, m) )
         if not m == em:
             raise VerbosErr(m, "test failed: expected {0}, got {1}".format(em, m))
