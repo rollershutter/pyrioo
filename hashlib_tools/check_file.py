@@ -11,10 +11,11 @@
 #  Copyright 2018 sebastian rollershutter
 ##
 import hashlib
+
 fallback_message = "select_hashlib - _hash_method_from(method_string): " \
-                 + "error\ncalled with: %s - fallback to: %s!"
+                   + "error\ncalled with: %s - fallback to: %s!"
 from hashlib_tools.error_classes import VerbosErr
-from hashlib_tools.hashlib_tool import _method_from  #, method_short
+from hashlib_tools.hashlib_tool import _method_from  # , method_short
 
 
 def _checksum_from_file(file_name, method):
@@ -32,7 +33,7 @@ def _checksum_from_file(file_name, method):
             if not data:
                 break
             m.update(data)
-        #fh.close()
+        # fh.close()
         ##return m.hexdigest()
     return m.hexdigest()
 
@@ -48,31 +49,36 @@ def checksum_from_file_with(file_name, method_string):
     return _checksum_from_file(file_name, _method_from(method_string))
 
 
-#######################################################################
+#######################################################################################################################
+
+
+#######################################################################################################################
 #### testing when this module is being called directly
 def main(args):
     print(dir(hashlib))
 
-    #tests
+    # tests
     m_default = hashlib.md5
     m_sha256 = hashlib.sha256
 
     method_strings = ("wrong", "sha256", "MD5", None)
     expected_methods = (m_default, m_sha256, m_default, m_default)
-    #print(zip(method_strings, expected_methods))
+    # print(zip(method_strings, expected_methods))
 
-    print("\ntesting:\n{0}\nexpecting:\n{1}\n".format(method_strings,expected_methods))
+    print("\ntesting:\n{0}\nexpecting:\n{1}\n".format(method_strings, expected_methods))
     test_name = "blabla_blubb.pkl"
-    for s, em in zip(method_strings, expected_methods): #method_strings:
+    for s, em in zip(method_strings, expected_methods):  # method_strings:
         m = _method_from(s)
-        print( "s: {0}\n  hash-method: {1}".format(s, m) )
+        print("s: {0}\n  hash-method: {1}".format(s, m))
         if not m == em:
             raise VerbosErr(m, "test failed: expected {0}, got {1}".format(em, m))
     print("tests passed successfully.")
     return 0
 
+
 ####
 if __name__ == '__main__':
     import sys
-    from hashlib_tools.hashlib_tool import _method_from  #, method_short
+    from hashlib_tools.hashlib_tool import _method_from  # , method_short
+
     sys.exit(main(sys.argv))

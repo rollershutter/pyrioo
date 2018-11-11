@@ -12,6 +12,7 @@ class Error(Exception):
     """Base class for exceptions in this module."""
     pass
 
+
 class VerbosErr(Error):
     """Exception raised for situations where a verbose error info needed.
     Attributes:
