@@ -16,6 +16,8 @@ fallback_message = "select_hashlib - _hash_method_from(method_string): " \
                    + "error\ncalled with: %s - fallback to: %s!"
 from hashlib_tools.error_classes import VerbosErr
 from hashlib_tools.hashlib_tool import method_from  # , method_short
+#from error_classes import VerbosErr
+#from hashlib_tool import method_from  # , method_short
 
 
 def _checksum_from_file(file_name, method):
@@ -77,6 +79,7 @@ def main(args):
 ####
 if __name__ == '__main__':
     import sys
-    from hashlib_tools.hashlib_tool import method_from  # , method_short
+    #from hashlib_tools.hashlib_tool import method_from  # , method_short
+    from hashlib_tool import method_from  # , method_short
 
     sys.exit(main(sys.argv))

@@ -11,7 +11,9 @@
 #  author: sebastian rollershutter
 ##
 import hashlib
+## import hashlib_tools.error_classes
 from hashlib_tools.error_classes import VerbosErr
+#from error_classes import VerbosErr
 fallback_message = "select_hashlib - _hash_method_from(method_string): " \
                  + "error\ncalled with: %s - fallback to: %s!"
 
@@ -54,7 +56,8 @@ def method_from(method_string):
 #######################################################################################################################
 # testing when this module is being called directly
 def main(args):
-    print(dir(hashlib))
+    from hashlib_tools.error_classes import VerbosErr
+    #print(dir(hashlib))
 
     #tests
     m_default = hashlib.md5

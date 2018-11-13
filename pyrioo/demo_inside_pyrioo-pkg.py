@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 #
-#  test_io_objects_only_json.py
+#  pyrioo python module
+#  pyrioo/__init__.py
 #  python 2.7 / 3.5 - tested
 #
 #  author: sebastian rollershutter
 ##
 import json
+#from pyrioo import import_obj, export_obj
 from file_io.import_export_objects_only_json \
-    import import_obj_with, export_obj_with
+    import \
+        import_obj_with as import_obj, export_obj_with as export_obj
 
 
 # define a custom class as example, providing conversion to dict for json-i/o:
@@ -53,18 +56,16 @@ def main():  # args):
 
     # setting a file to save/load
     data_path = os_environ['PWD']
-    file_name = '%s/py_json_tests_testobject.json' % data_path
+    file_name = '%s/demo.json' % data_path
 
     # testing export/(re-)import with two objects in a loop:
     object_list = [Foo(({"min": 33.33, "avg": 44.44}, 2, 4)),
                    Foo(({"min": 32.23, "avg": 35.53}, 3, 4)),
                    ]
     for c_obj in object_list:
-        #export_obj_with(c_obj.to_dict(), file_name, None, 'sha256')
-        export_obj_with(c_obj, file_name, ComplexEncoder)  # , 'sha256')
+        export_obj(c_obj, file_name, ComplexEncoder)  # , 'sha256')
 
-        #t_obj = Foo.from_dict(import_obj_with(file_name, None, 'sha256'))
-        t_obj = import_obj_with(file_name, Foo.from_dict)  # , 'sha256')
+        t_obj = import_obj(file_name, Foo.from_dict)  # , 'sha256')
         print("{}".format(t_obj), type(t_obj))  # print(out, type(out))
 
     #### TODO: lists of custom class-instances...
