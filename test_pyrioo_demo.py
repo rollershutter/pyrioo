@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-#  test_pyrioo.py
-#
-# TODO: json instead of pickle - done
+#  test_pyrioo_demo.py
 #
 #  author: sebastian rollershutter
 ####

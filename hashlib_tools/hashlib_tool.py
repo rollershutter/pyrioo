@@ -8,7 +8,7 @@
 #        hashlib -> hash-api:
 #                   -hashlib_tools.hash_file(file_name, hash_string)
 #
-#  Copyright 2018 sebastian rollershutter
+#  author: sebastian rollershutter
 ##
 import hashlib
 from hashlib_tools.error_classes import VerbosErr

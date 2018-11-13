@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 #
-#  pickle_obj_python3_1a
+#  import_export_objects.py
 #  python 2.7 / 3.5 - tested
 #
 #  TODO: delegation - func injection - done
 #        outsourcing check_file to hashlib_tools-module for saving
 #          objects - done
 #
-#  Copyright 2018 sebastian rollershutter
+#  author: sebastian rollershutter
 ##
 import json
 import pickle
@@ -88,9 +88,11 @@ def import_obj_with(file_name, hash_method_str, d_import_func):
         try:
             loaded_obj = d_import_func(file_name)
             return loaded_obj
-        except FileNotFoundError:
-            if IO_DEBUG:
-                print('file: %s not found...' % file_name)
+        #except FileNotFoundError:  # TODO: include a FileNotFoundErr...
+        #    if IO_DEBUG:
+        #        print('file: %s not found...' % file_name)
+        except Exception as ex:
+            print("{}".format(ex))
     # except TypeError:
     #	byte needed, not string
     # except Error as err:
@@ -98,6 +100,14 @@ def import_obj_with(file_name, hash_method_str, d_import_func):
     except IOError:
         if IO_DEBUG:
             print('no hash-file found...')
+
+
+##
+def export_obj_with(obj_to_export, file_name, method_str, d_export_func):
+    d_export_func(obj_to_export, file_name)
+    # if save_checksum_from_file_with(file_name, method_str):
+    #    return True
+    save_checksum_from_file_with(file_name, method_str)
 
 
 ####

@@ -4,7 +4,7 @@
 #  error_classes.py (hashlib_tools)
 #  python 2.7 / 3.5 - tested
 #
-#  Copyright 2018 sebastian rollershutter
+#  author: sebastian rollershutter
 ##
 
 
