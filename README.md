@@ -1,9 +1,9 @@
 # pyrioo
 ### import/export python objects from/to file
+- python 2.7 / 3.5
 - checksum verification
 
-### with module: file_io/import_export_objects_only_json.py:
-- checksum verification
+### only_json:
 - optional json-encode/-decode injection for json conversion of custom classes
 
 i often used pickle to im-/export data(-objects) from my python programs and had my own little collection to

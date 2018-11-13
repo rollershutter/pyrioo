@@ -6,19 +6,15 @@
 #
 #  author: sebastian rollershutter
 ##
-"""testing module file_io:
-now import/export is json.loads/json.dumps only,
-    with sha256 checksum by default,
-    with optional JSONEncoder/decode-method
+"""testing module file_io - now import/export is json loads/dumps only.
+    checksum verification with sha256 checksum by default,
+    optional JSONEncoder/decode-method
 
-this demo shows how to import/export own class-instances with
-conversion-method injection.
+this demo shows how to import/export own class-instances with conversion-method injection.
 
-add to_dict/from_dict-methods to your class and for importing
-define a JSONEncoder using to_dict-method from your class.
+add to_dict/from_dict-methods to your class and for importing define a JSONEncoder using to_dict-method from your class.
 
-with builtin types, (nearly) no worries about conversion needed,
-as they will get converted back to builtin types,
+with builtin types, (nearly) no worries about conversion needed, as they will get converted back to builtin types,
 see python docs -> json.
 """
 import json
@@ -50,33 +46,33 @@ class Foo(object):
 
 
 # provide a JSONEncoder for custom class Foo using instance-method to_dict():
-class ComplexEncoder(json.JSONEncoder):
+class FooEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Foo):
             return obj.to_dict()
         return json.JSONEncoder.default(self, obj)
 
 
-#######################################################################################################################
+####
 def main():  # args):
     from os import environ as os_environ
-    import file_io.import_export_objects_only_json
 
     # setting a file to save/load
     data_path = os_environ['PWD']
     file_name = '%s/demo.json' % data_path
 
+    # setting json.dumps nice-dump-indentation:
+    import file_io.import_export_objects_only_json  # .INDENT
+    file_io.import_export_objects_only_json.INDENT = None  # 2 # 4
+
     # testing export/(re-)import with two objects in a loop:
     object_list = [Foo(({"min": 33.33, "avg": 44.44}, 2, 4)),
-                   Foo(({"min": 32.23, "avg": 35.53}, 3, 4)),
-                   ]
-
-    file_io.import_export_objects_only_json.INDENT = None  # 2
+                   Foo(({"min": 32.23, "avg": 35.53}, 3, 4))]
     for c_obj in object_list:
-        export_obj(c_obj, file_name, ComplexEncoder)  # , 'sha256')
+        export_obj(c_obj, file_name, FooEncoder)  # , 'sha256')
 
         t_obj = import_obj(file_name, Foo.from_dict)  # , 'sha256')
-        print("{}".format(t_obj), type(t_obj))  # print(out, type(out))
+        print(t_obj, type(t_obj))  # print(out, type(out))
 
     #### TODO: lists of custom class-instances...
     # test_list = []
