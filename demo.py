@@ -6,11 +6,26 @@
 #
 #  author: sebastian rollershutter
 ##
+"""testing module file_io:
+now import/export is json.loads/json.dumps only,
+    with sha256 checksum by default,
+    with optional JSONEncoder/decode-method
+
+this demo shows how to import/export own class-instances with
+conversion-method injection.
+
+add to_dict/from_dict-methods to your class and for importing
+define a JSONEncoder using to_dict-method from your class.
+
+with builtin types, (nearly) no worries about conversion needed,
+as they will get converted back to builtin types,
+see python docs -> json.
+"""
 import json
 from file_io import import_obj, export_obj
 
 
-# define a custom class as example, providing conversion to dict for json-i/o:
+# define a custom class as example, providing conversion to/from dict for json-i/o:
 class Foo(object):
     next_id = 0
 
@@ -44,11 +59,8 @@ class ComplexEncoder(json.JSONEncoder):
 
 #######################################################################################################################
 def main():  # args):
-    # testing module file_io.import_export_objects_only_json:
-    # now import/export is json.loads/json.dumps only,
-    #   with sha256 checksum by default,
-    #   with optional JSONEncoder/decode-method
     from os import environ as os_environ
+    import file_io.import_export_objects_only_json
 
     # setting a file to save/load
     data_path = os_environ['PWD']
@@ -58,6 +70,8 @@ def main():  # args):
     object_list = [Foo(({"min": 33.33, "avg": 44.44}, 2, 4)),
                    Foo(({"min": 32.23, "avg": 35.53}, 3, 4)),
                    ]
+
+    file_io.import_export_objects_only_json.INDENT = None  # 2
     for c_obj in object_list:
         export_obj(c_obj, file_name, ComplexEncoder)  # , 'sha256')
 

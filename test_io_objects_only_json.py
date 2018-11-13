@@ -7,8 +7,9 @@
 #  author: sebastian rollershutter
 ##
 import json
+#import file_io
 from file_io import import_obj, export_obj
-
+import file_io.import_export_objects_only_json
 
 # define a custom class as example, providing conversion to dict for json-i/o:
 class Foo(object):
@@ -52,12 +53,14 @@ def main():  # args):
 
     # setting a file to save/load
     data_path = os_environ['PWD']
-    file_name = '%s/py_json_tests_testobject.json' % data_path
+    file_name = '%s/test_io_objects.json' % data_path
 
     # testing export/(re-)import with two objects in a loop:
     object_list = [Foo(({"min": 33.33, "avg": 44.44}, 2, 4)),
                    Foo(({"min": 32.23, "avg": 35.53}, 3, 4)),
                    ]
+
+    file_io.import_export_objects_only_json.INDENT = None  # 2
     for c_obj in object_list:
         #export_obj_with(c_obj.to_dict(), file_name, None, 'sha256')
         export_obj(c_obj, file_name, ComplexEncoder)  # , 'sha256')

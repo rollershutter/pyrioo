@@ -51,30 +51,30 @@ def method_from(method_string):
 
 
 #######################################################################################################################
-# testing when this module is being called directly
-def main(args):
-    from hashlib_tools import VerbosErr
-    #print(dir(hashlib))
-
-    #tests
-    m_default = hashlib.md5
-    m_sha256 = hashlib.sha256
-
-    method_strings = ("wrong", "sha256", "MD5", None)
-    expected_methods = (m_default, m_sha256, m_default, m_default)
-    #print(zip(method_strings, expected_methods))
-
-    print("\ntesting:\n{0}\nexpecting:\n{1}\n".format(method_strings,expected_methods))
-    for s, em in zip(method_strings, expected_methods): #method_strings:
-        m = method_from(s)
-        print( "s: {0}\n  hash-method: {1}".format(s, m) )
-        if not m == em:
-            raise VerbosErr(m, "test failed: expected {0}, got {1}".format(em, m))
-    print("tests passed successfully.")
-    return 0
-
-
-####
-if __name__ == '__main__':
-    import sys
-    sys.exit(main(sys.argv))
+# # testing when this module is being called directly
+# def main(args):
+#     from hashlib_tools import VerbosErr
+#     #print(dir(hashlib))
+#
+#     #tests
+#     m_default = hashlib.md5
+#     m_sha256 = hashlib.sha256
+#
+#     method_strings = ("wrong", "sha256", "MD5", None)
+#     expected_methods = (m_default, m_sha256, m_default, m_default)
+#     #print(zip(method_strings, expected_methods))
+#
+#     print("\ntesting:\n{0}\nexpecting:\n{1}\n".format(method_strings,expected_methods))
+#     for s, em in zip(method_strings, expected_methods): #method_strings:
+#         m = method_from(s)
+#         print( "s: {0}\n  hash-method: {1}".format(s, m) )
+#         if not m == em:
+#             raise VerbosErr(m, "test failed: expected {0}, got {1}".format(em, m))
+#     print("tests passed successfully.")
+#     return 0
+#
+#
+# ####
+# if __name__ == '__main__':
+#     import sys
+#     sys.exit(main(sys.argv))

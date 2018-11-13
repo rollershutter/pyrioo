@@ -12,7 +12,7 @@ from hashlib_tools import checksum_from_file_with, method_from, method_short
 
 ####
 IO_DEBUG = False  # True
-
+SORT_KEYS, INDENT = True, 4
 
 #   ## read/write json
 def read_json(file_name, json_object_hook):
@@ -29,7 +29,7 @@ def read_json(file_name, json_object_hook):
     return out
 
 
-def write_json(obj_to_export, file_name, json_encoder):
+def write_json(obj_to_export, file_name, json_encoder):  # , sort_keys=True, indent=4):
     """Write json representation of object to file.
     Args:
         :param obj_to_export: object to export
@@ -37,7 +37,7 @@ def write_json(obj_to_export, file_name, json_encoder):
         :param json_encoder: JSONEncoder class or None
     """
     with open(file_name, 'w') as file_object:
-        file_object.write(json.dumps(obj_to_export, cls=json_encoder, sort_keys=True, indent=4))
+        file_object.write(json.dumps(obj_to_export, cls=json_encoder, sort_keys=SORT_KEYS, indent=INDENT))
 
 
 #   ## import/export

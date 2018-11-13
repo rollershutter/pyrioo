@@ -6,25 +6,34 @@
 - checksum verification
 - optional json-encode/-decode injection for json conversion of custom classes
 
-i often used pickle to im-/export data(-objects) from my python programs and had this little collection to
+i often used pickle to im-/export data(-objects) from my python programs and had my own little collection to
 import/export with checksum validation.
 
 recently i reworked at it a little bit to add json import/export as alternative to pickle.
 I added a demo, but is is little bit too complicated.
 
-So just by now reworked again at file_io/import_export_objects_only_json.py and added a simple demo for the
-new json-encode/-decode injection (optional) (https://docs.python.org/3/library/json.html "python docs json"),
-see:
+So just reworked again at file_io/import_export_objects_only_json.py (not using pickle anymore there) and
+added a simple demo for the new json-encode/-decode injection (optional) as shown in python-docs:
+<https://docs.python.org/3/library/json.html>
 
-## test_io_objects_only_json.py
+
+## demo.py
+this demo shows how to import/export own class-instances with
+conversion-method injection.
+
+add to_dict/from_dict-methods to your class and for importing
+define a JSONEncoder using to_dict-method from your class.
+
+with builtin types, (nearly) no worries about conversion needed,
+as they will get converted back to builtin types,
+see python docs -> json.
 
 ```python
 import json
-from file_io.import_export_objects_only_json \
-    import import_obj_with, export_obj_with
+from file_io import import_obj, export_obj
 
 
-# define a custom class as example, providing conversion to dict for json-i/o:
+# define a custom class as example, providing conversion to/from dict for json-i/o:
 class Foo(object):
     next_id = 0
 
@@ -58,26 +67,23 @@ class ComplexEncoder(json.JSONEncoder):
 
 #######################################################################################################################
 def main():  # args):
-    # testing module file_io.import_export_objects_only_json:
-    # now import/export is json.loads/json.dumps only,
-    #   with sha256 checksum by default,
-    #   with optional JSONEncoder/decode-method
     from os import environ as os_environ
+    import file_io.import_export_objects_only_json
 
     # setting a file to save/load
     data_path = os_environ['PWD']
-    file_name = '%s/py_json_tests_testobject.json' % data_path
+    file_name = '%s/demo.json' % data_path
 
     # testing export/(re-)import with two objects in a loop:
     object_list = [Foo(({"min": 33.33, "avg": 44.44}, 2, 4)),
                    Foo(({"min": 32.23, "avg": 35.53}, 3, 4)),
                    ]
-    for c_obj in object_list:
-        #export_obj_with(c_obj.to_dict(), file_name, None, 'sha256')
-        export_obj_with(c_obj, file_name, ComplexEncoder)  # , 'sha256')
 
-        #t_obj = MyObj2.from_dict(import_obj_with(file_name, None, 'sha256'))
-        t_obj = import_obj_with(file_name, Foo.from_dict)  # , 'sha256')
+    file_io.import_export_objects_only_json.INDENT = None  # 2
+    for c_obj in object_list:
+        export_obj(c_obj, file_name, ComplexEncoder)  # , 'sha256')
+
+        t_obj = import_obj(file_name, Foo.from_dict)  # , 'sha256')
         print("{}".format(t_obj), type(t_obj))  # print(out, type(out))
 
     #### TODO: lists of custom class-instances...
@@ -87,5 +93,5 @@ def main():  # args):
 ####
 if __name__ == '__main__':
     import sys
-sys.exit(main()) # sys.argv))
+    sys.exit(main())  # sys.argv))
 ```
