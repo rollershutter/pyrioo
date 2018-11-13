@@ -100,6 +100,14 @@ def import_obj_with(file_name, hash_method_str, d_import_func):
             print('no hash-file found...')
 
 
+##
+def export_obj_with(obj_to_export, file_name, method_str, d_export_func):
+    d_export_func(obj_to_export, file_name)
+    # if save_checksum_from_file_with(file_name, method_str):
+    #    return True
+    save_checksum_from_file_with(file_name, method_str)
+
+
 ####
 def _hashfile_from(file_name, hash_method):
     """Construct a hash/checksum-file-name from the given file-name and the given hashlib.hash-method short-name.
@@ -131,10 +139,3 @@ def save_checksum_from_file_with(file_name, method_string):
         ##print(checksum_from_file(file_path, hash_method), file=hash_file_object)		## python3.5
         hash_file_object.write(checksum_from_file_with(file_name, method_string))
     return True
-
-
-def export_obj_with(obj_to_export, file_name, method_str, d_export_func):
-    d_export_func(obj_to_export, file_name)
-    # if save_checksum_from_file_with(file_name, method_str):
-    #    return True
-    save_checksum_from_file_with(file_name, method_str)
