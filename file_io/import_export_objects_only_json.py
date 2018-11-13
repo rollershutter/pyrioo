@@ -74,9 +74,11 @@ def import_obj_with(file_name, json_object_hook=None, method_str='sha256'):
         try:
             loaded_obj = read_json(file_name, json_object_hook)
             return loaded_obj
-        except FileNotFoundError:
-            if IO_DEBUG:
-                print('file: %s not found...' % file_name)
+        #except FileNotFoundError:
+        #    if IO_DEBUG:
+        #        print('file: %s not found...' % file_name)
+        except Exception as ex:
+            print("{}".format(ex))
     # except TypeError:
     #	byte needed, not string
     # except Error as err:
@@ -147,17 +149,12 @@ def main(args):
     #   with sha256 checksum by default,
     #   with optional JSONEncoder/decode-method
     from os import environ as os_environ
-    #import json
-    #from file_io.import_export_objects \
-    #    import import_obj_with, export_obj_with, \
-    #    read_json, write_json
 
     # setting a file to save/load
     data_path = os_environ['PWD']
     file_name = '%s/py_json_tests_testobject.json' % data_path
 
     # define a custom class, providing conversion to dict for json-i/o:
-    ####
     class MyObj2():
         #l = []
         next_id = 0
@@ -168,7 +165,7 @@ def main(args):
             self.state = state
 
         def __str__(self):
-            return str(self.to_dict())  #str(_myobj2_to_dict(self))  # "{}".format(json.dumps(_myobj2_to_dict(self), sort_keys=True, indent=4))  #str(sorted(_myobj2_to_dict(self).items()))
+            return str(self.to_dict())
 
         def to_dict(self):
             return {'class': self.__class__.__name__,
@@ -188,33 +185,12 @@ def main(args):
                 return obj.to_dict()
             return json.JSONEncoder.default(self, obj)
 
-    # ##
-    # def _myobj2_to_dict(obj):
-    #     return {'class': obj.__class__.__name__,
-    #             'id': obj.id,
-    #             'state': obj.state}
-    #
-    # def _as_myobj2(dct):
-    #     if "class" in dct and dct['class'] == 'MyObj2':
-    #         return MyObj2(dct['state'])
-    #     return dct
-    #
-    # class ComplexEncoder(json.JSONEncoder):
-    #     def default(self, obj):
-    #         if isinstance(obj, MyObj2):
-    #             return _myobj2_to_dict(obj)
-    #         return json.JSONEncoder.default(self, obj)
-    #
-    # # my_obj2 = MyObj2(({"min": 33.33, "avg": 44.44}, 2, 4))
-    # # print(_myobj2_to_dict(my_obj2))
-
     # testing export/(re-)import with two objects in a loop:
     object_list = [MyObj2(({"min": 33.33, "avg": 44.44}, 2, 4)),
                    MyObj2(({"min": 32.23, "avg": 35.53}, 3, 4)),
                    ]
     for c_obj in object_list:
         #export_obj_with(c_obj.to_dict(), file_name, None, 'sha256')
-        ##export_obj_with(c_obj, file_name, c_obj.to_dict, 'sha256')
         export_obj_with(c_obj, file_name, ComplexEncoder)  # , 'sha256')
 
         #t_obj = MyObj2.from_dict(import_obj_with(file_name, None, 'sha256'))

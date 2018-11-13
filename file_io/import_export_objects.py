@@ -88,9 +88,11 @@ def import_obj_with(file_name, hash_method_str, d_import_func):
         try:
             loaded_obj = d_import_func(file_name)
             return loaded_obj
-        except FileNotFoundError:
-            if IO_DEBUG:
-                print('file: %s not found...' % file_name)
+        #except FileNotFoundError:  # TODO: include a FileNotFoundErr...
+        #    if IO_DEBUG:
+        #        print('file: %s not found...' % file_name)
+        except Exception as ex:
+            print("{}".format(ex))
     # except TypeError:
     #	byte needed, not string
     # except Error as err:
