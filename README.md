@@ -1,5 +1,10 @@
 # pyrioo
-import/export python objects from/to file
+### import/export python objects from/to file
+-checksum verification
+
+### with module: file_io/import_export_objects_only_json.py:
+-checksum verification
+-optional json-encode/-decode injection for json conversion of custom classes
 
 i often used pickle to im-/export data(-objects) from my python programs and had this little collection to
 import/export with checksum validation.
@@ -11,7 +16,7 @@ So just by now reworked again at file_io/import_export_objects_only_json.py and 
 new json-encode/-decode injection (optional) (https://docs.python.org/3/library/json.html "python docs json"),
 see:
 
-# test_io_objects_only_json.py
+## test_io_objects_only_json.py
 
 ```python
 import json
