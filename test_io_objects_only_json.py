@@ -7,8 +7,7 @@
 #  author: sebastian rollershutter
 ##
 import json
-from file_io.import_export_objects_only_json \
-    import import_obj_with, export_obj_with
+from file_io import import_obj, export_obj
 
 
 # define a custom class as example, providing conversion to dict for json-i/o:
@@ -61,10 +60,10 @@ def main():  # args):
                    ]
     for c_obj in object_list:
         #export_obj_with(c_obj.to_dict(), file_name, None, 'sha256')
-        export_obj_with(c_obj, file_name, ComplexEncoder)  # , 'sha256')
+        export_obj(c_obj, file_name, ComplexEncoder)  # , 'sha256')
 
         #t_obj = Foo.from_dict(import_obj_with(file_name, None, 'sha256'))
-        t_obj = import_obj_with(file_name, Foo.from_dict)  # , 'sha256')
+        t_obj = import_obj(file_name, Foo.from_dict)  # , 'sha256')
         print("{}".format(t_obj), type(t_obj))  # print(out, type(out))
 
     #### TODO: lists of custom class-instances...

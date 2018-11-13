@@ -1,23 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 #
-#  pyrioo python module
-#  pyrioo/__init__.py
+#  demo.py
 #  python 2.7 / 3.5 - tested
 #
 #  author: sebastian rollershutter
 ##
-#import file_io
-#print(dir(file_io))
-#
-#from file_io import import_obj, export_obj
-#exit(0)
-#
-#import json
-##from pyrioo import import_obj, export_obj
-#from file_io.import_export_objects_only_json \
-#    import \
-#        import_obj_with as import_obj, export_obj_with as export_obj
 import json
 from file_io import import_obj, export_obj
 
