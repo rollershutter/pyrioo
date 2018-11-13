@@ -50,7 +50,15 @@ def write_json(obj_to_export, file_name, json_encoder):
 ##
 #def import_obj_with(file_name, hash_method_str, d_import_func):
 def import_obj_with(file_name, json_object_hook=None, method_str='sha256'):
-
+    """Import a object from given file, checksum validation, optional json-decoding-method.
+       calls read_json() -> json.loads()
+       Args:
+           file_name: file to load json-data from
+           json_object_hook: optional decode-method to be passed to json.loads()
+           method_str: short-method-name of desired hashlib-method, defaults to 'sha256'
+       Returns:
+           <json-repr/obj>: object of type provided with optional json_object_hook, json-representation otherwise
+    """
     hash_file = _hashfile_from(file_name, method_from(method_str))
     try:
         hash_f = open(hash_file, 'r')
@@ -80,6 +88,17 @@ def import_obj_with(file_name, json_object_hook=None, method_str='sha256'):
 
 ##
 def export_obj_with(obj_to_export, file_name, json_encoder=None, method_str="sha256"):
+    """Export a object to given file, checksum saving, optional JSONEncoder class.
+       calls write_json() -> json.dumps()
+       Args:
+           obj_to_export: object to export,
+                    has to be 'JSON serializable', otherwise a specialised JSONEncoder class is obligatory
+           file_name: file to write json-data to
+           json_encoder: optional JSONEncoder class
+                    to be passed to json.dumps()
+           method_str: short-method-name of desired hashlib-method,
+                    defaults to 'sha256'
+    """
     write_json(obj_to_export, file_name, json_encoder)
     # if save_checksum_from_file_with(file_name, method_str):
     #    return True
