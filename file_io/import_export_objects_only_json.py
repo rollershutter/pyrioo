@@ -1,26 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 #
-#  import_export_objects.py
+#  import_export_objects_only_json.py
 #  python 2.7 / 3.5 - tested
-#
-#  TODO: delegation - func injection - done
-#        outsourcing check_file to hashlib_tools-module for saving
-#          objects - done
 #
 #  author: sebastian rollershutter
 ##
 import json
-# import pickle
-from hashlib_tools.check_file import checksum_from_file_with, method_from  # , method_short
-# _hashfile_from, checksum_from_file_with  #hashmethod_hashfile_from, checksum_from_file_with  # _checksum_from_file
+from hashlib_tools.check_file import checksum_from_file_with, method_from  # , method_short  # <- can be imported from a module which imports by itself from another module
 from hashlib_tools.hashlib_tool import method_short
 
 ####
 IO_DEBUG = False  # True
 
 
-#   ## delegates read/write json/pickle
+#   ## read/write json
 def read_json(file_name, json_object_hook):
     """
     Reads a json file with json module.
@@ -47,8 +41,7 @@ def write_json(obj_to_export, file_name, json_encoder):
         file_object.write(json.dumps(obj_to_export, cls=json_encoder, sort_keys=True, indent=4))
 
 
-##
-#def import_obj_with(file_name, hash_method_str, d_import_func):
+#   ## import/export
 def import_obj_with(file_name, json_object_hook=None, method_str='sha256'):
     """Import a object from given file, checksum validation, optional json-decoding-method.
        calls read_json() -> json.loads()
@@ -140,69 +133,67 @@ def save_checksum_from_file_with(file_name, method_string):
     return True
 
 
-#######################################################################################################################
-
-
-def main(args):
-    # testing module:
-    # now import/export is json.loads/json.dumps only,
-    #   with sha256 checksum by default,
-    #   with optional JSONEncoder/decode-method
-    from os import environ as os_environ
-
-    # setting a file to save/load
-    data_path = os_environ['PWD']
-    file_name = '%s/py_json_tests_testobject.json' % data_path
-
-    # define a custom class, providing conversion to dict for json-i/o:
-    class MyObj2():
-        #l = []
-        next_id = 0
-
-        def __init__(self, state):
-            MyObj2.next_id += 1
-            self.id = MyObj2.next_id
-            self.state = state
-
-        def __str__(self):
-            return str(self.to_dict())
-
-        def to_dict(self):
-            return {'class': self.__class__.__name__,
-                    'id': self.id,
-                    'state': self.state}
-
-        @staticmethod
-        def from_dict(dct):
-            if "class" in dct and dct['class'] == MyObj2.__name__:
-                return MyObj2(dct['state'])
-            return dct
-
-    # provide a JSONEncoder using instance-method to_dict():
-    class ComplexEncoder(json.JSONEncoder):
-        def default(self, obj):
-            if isinstance(obj, MyObj2):
-                return obj.to_dict()
-            return json.JSONEncoder.default(self, obj)
-
-    # testing export/(re-)import with two objects in a loop:
-    object_list = [MyObj2(({"min": 33.33, "avg": 44.44}, 2, 4)),
-                   MyObj2(({"min": 32.23, "avg": 35.53}, 3, 4)),
-                   ]
-    for c_obj in object_list:
-        #export_obj_with(c_obj.to_dict(), file_name, None, 'sha256')
-        export_obj_with(c_obj, file_name, ComplexEncoder)  # , 'sha256')
-
-        #t_obj = MyObj2.from_dict(import_obj_with(file_name, None, 'sha256'))
-        t_obj = import_obj_with(file_name, MyObj2.from_dict)  # , 'sha256')
-        print("{}".format(t_obj), type(t_obj))  # print(out, type(out))
-
-
-    ####
-    # test_list = []
-
-
-####
-if __name__ == '__main__':
-    import sys
-    sys.exit(main(sys.argv))
+# #######################################################################################################################
+# def main(args):
+#     # testing module:
+#     # now import/export is json.loads/json.dumps only,
+#     #   with sha256 checksum by default,
+#     #   with optional JSONEncoder/decode-method
+#     from os import environ as os_environ
+#
+#     # setting a file to save/load
+#     data_path = os_environ['PWD']
+#     file_name = '%s/py_json_tests_testobject.json' % data_path
+#
+#     # define a custom class, providing conversion to dict for json-i/o:
+#     class MyObj2():
+#         #l = []
+#         next_id = 0
+#
+#         def __init__(self, state):
+#             MyObj2.next_id += 1
+#             self.id = MyObj2.next_id
+#             self.state = state
+#
+#         def __str__(self):
+#             return str(self.to_dict())
+#
+#         def to_dict(self):
+#             return {'class': self.__class__.__name__,
+#                     'id': self.id,
+#                     'state': self.state}
+#
+#         @staticmethod
+#         def from_dict(dct):
+#             if "class" in dct and dct['class'] == MyObj2.__name__:
+#                 return MyObj2(dct['state'])
+#             return dct
+#
+#     # provide a JSONEncoder using instance-method to_dict():
+#     class ComplexEncoder(json.JSONEncoder):
+#         def default(self, obj):
+#             if isinstance(obj, MyObj2):
+#                 return obj.to_dict()
+#             return json.JSONEncoder.default(self, obj)
+#
+#     # testing export/(re-)import with two objects in a loop:
+#     object_list = [MyObj2(({"min": 33.33, "avg": 44.44}, 2, 4)),
+#                    MyObj2(({"min": 32.23, "avg": 35.53}, 3, 4)),
+#                    ]
+#     for c_obj in object_list:
+#         #export_obj_with(c_obj.to_dict(), file_name, None, 'sha256')
+#         export_obj_with(c_obj, file_name, ComplexEncoder)  # , 'sha256')
+#
+#         #t_obj = MyObj2.from_dict(import_obj_with(file_name, None, 'sha256'))
+#         t_obj = import_obj_with(file_name, MyObj2.from_dict)  # , 'sha256')
+#         print("{}".format(t_obj), type(t_obj))  # print(out, type(out))
+#
+#
+#     ####
+#     # test_list = []
+#
+#
+# ####
+# if __name__ == '__main__':
+#     import sys
+#     sys.exit(main(sys.argv))
