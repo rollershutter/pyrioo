@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  check_file.py
+#  checksum.py
 #  python 2.7 / 3.5 - tested
 #
 #  TODO: clean up my room,
@@ -15,11 +15,11 @@
 #    import VerbosErr, method_from
 from hashlib_tools import method_from
 
-fallback_message = "select_hashlib - _hash_method_from(method_string): " \
-                   + "error\ncalled with: %s - fallback to: %s!"
+#fallback_message = "select_hashlib - _hash_method_from(method_string): " \
+#                   + "error\ncalled with: %s - fallback to: %s!"
 
 
-def _checksum_from_file(file_name, method):
+def _from_file(file_name, method):
     """Calculates checksum from given file with given hashlib-method.
     Args:
         file_name (str): file-name to get checksum from
@@ -37,7 +37,7 @@ def _checksum_from_file(file_name, method):
     return m.hexdigest()
 
 
-def checksum_from_file_with(file_name, method_string):
+def from_file_with(file_name, method_string):
     """Get hashlib-method from method_string and return checksum from given file.
     Args:
         file_name (str): file-name to get checksum from
@@ -45,7 +45,7 @@ def checksum_from_file_with(file_name, method_string):
     Returns:
         str: hash/checksum of given file in file_name as hexdigest-string
     """
-    return _checksum_from_file(file_name, method_from(method_string))
+    return _from_file(file_name, method_from(method_string))
 
 
 #######################################################################################################################

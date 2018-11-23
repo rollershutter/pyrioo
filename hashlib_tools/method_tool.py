@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  hashlib_tool.py
+#  method_tool.py
 #  python 2.7 / 3.5 - tested
 #
 #  TODO: clean up my room, 

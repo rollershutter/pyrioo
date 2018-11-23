@@ -7,7 +7,7 @@
 #  author: sebastian rollershutter
 ##
 import json
-from hashlib_tools import checksum_from_file_with, method_from, method_short
+from hashlib_tools import from_file_with, method_from, method_short
 
 
 ####
@@ -55,8 +55,8 @@ def import_obj_with(file_name, json_object_hook=None, method_str='sha256'):
     try:
         hash_f = open(hash_file, 'r')
         my_hash = hash_f.read()
-        if not my_hash.rstrip().endswith(checksum_from_file_with(file_name,
-                                                                 method_str)):  # python3: checksum_from_file().encode() returns bytestring - removed encode
+        if not my_hash.rstrip().endswith(from_file_with(file_name,
+                                                        method_str)):  # python3: checksum_from_file().encode() returns bytestring - removed encode
             if IO_DEBUG:
                 print('checksum not correct!')
             return
@@ -127,5 +127,5 @@ def save_checksum_from_file_with(file_name, method_string):
     with open(hash_file_name, 'w') as hash_file_object:
         ##print >> hash_file_object, checksum_from_file(file_path, hash_method)			## python2.7
         ##print(checksum_from_file(file_path, hash_method), file=hash_file_object)		## python3.5
-        hash_file_object.write(checksum_from_file_with(file_name, method_string))
+        hash_file_object.write(from_file_with(file_name, method_string))
     return True
