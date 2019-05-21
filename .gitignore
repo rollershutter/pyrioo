@@ -105,3 +105,8 @@ venv.bak/
 
 # idea jetbrains
 .idea/
+#output
+*.json
+*.sha*
+*.mp5
+*.pbkdf2_hmac

@@ -12,6 +12,7 @@ from hashlib_tools import from_file_with, method_from, method_short
 
 ####
 IO_DEBUG = False  # True
+# (!) nice feature(s) for json.dumps to format output-file (!):
 SORT_KEYS, INDENT = True, 4
 
 #   ## read/write json
