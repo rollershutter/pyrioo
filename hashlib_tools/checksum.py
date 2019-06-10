@@ -4,48 +4,73 @@
 #  checksum.py
 #  python 2.7 / 3.5 - tested
 #
-#  TODO: clean up my room,
-#        hashlib -> hash-api: 
-#                   -hashlib_tools.hash_file(file_name, hash_string)
-#
 #  author: sebastian rollershutter
 ##
-#import hashlib
-#from hashlib_tools \
-#    import VerbosErr, method_from
 from hashlib_tools import method_from
-
-#fallback_message = "select_hashlib - _hash_method_from(method_string): " \
-#                   + "error\ncalled with: %s - fallback to: %s!"
 
 
 def _from_file(file_name, method):
     """Calculates checksum from given file with given hashlib-method.
-    Args:
-        file_name (str): file-name to get checksum from
-        method (hashlib-method): hashlib-method to get checksum of given file
-    Returns:
-        str: hash/checksum of given file in file_name as hexdigest-string
+
+    :param file_name (str): file-name to get checksum from
+    :param method (hashlib hash-object): hashlib-algorithm to get
+    checksum of given file
+
+    :return (str): hash/checksum of given file in file_name as
+    hexdigest-string
     """
-    with open(file_name, 'rb') as fh:
-        m = method()
+    with open(file_name, 'rb') as file_object:
+        method_object = method()
         while True:
-            data = fh.read(8192)
+            data = file_object.read(8192)
             if not data:
                 break
-            m.update(data)
-    return m.hexdigest()
+            method_object.update(data)
+    return method_object.hexdigest()
 
 
 def from_file_with(file_name, method_string):
     """Get hashlib-method from method_string and return checksum from given file.
-    Args:
-        file_name (str): file-name to get checksum from
-        method_string (str): name of desired hashlib-method to get checksum of given file
-    Returns:
-        str: hash/checksum of given file in file_name as hexdigest-string
+
+    calls _from_file(file_name, method_from(method_string))
+
+    :param file_name (str): file-name to get checksum from
+    :param method_string (str): name of desired hashlib-method to get
+    checksum of given file
+
+    :return (str): hash/checksum of given file in file_name as
+    hexdigest-string
     """
     return _from_file(file_name, method_from(method_string))
+
+
+# def _from_file(file_name, method):
+#     """Calculates checksum from given file with given hashlib-method.
+#     Args:
+#         file_name (str): file-name to get checksum from
+#         method (hashlib-method): hashlib-method to get checksum of given file
+#     Returns:
+#         str: hash/checksum of given file in file_name as hexdigest-string
+#     """
+#     with open(file_name, 'rb') as fh:
+#         m = method()
+#         while True:
+#             data = fh.read(8192)
+#             if not data:
+#                 break
+#             m.update(data)
+#     return m.hexdigest()
+#
+#
+# def from_file_with(file_name, method_string):
+#     """Get hashlib-method from method_string and return checksum from given file.
+#     Args:
+#         file_name (str): file-name to get checksum from
+#         method_string (str): name of desired hashlib-method to get checksum of given file
+#     Returns:
+#         str: hash/checksum of given file in file_name as hexdigest-string
+#     """
+#     return _from_file(file_name, method_from(method_string))
 
 
 #######################################################################################################################

@@ -53,7 +53,7 @@ class FooEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-####
+# main function
 def main():  # args):
     from os import environ as os_environ
 
@@ -74,11 +74,12 @@ def main():  # args):
         t_obj = import_obj(file_name, Foo.from_dict)  # , 'sha256')
         print(t_obj, type(t_obj))  # print(out, type(out))
 
-    #### TODO: lists of custom class-instances...
-    # test_list = []
+    # TODO: lists of custom class-instances... - done: see demo_iterable.py
+    # test_list = [] # see demo_iterable.py
 
 
-####
+# test if called directly
 if __name__ == '__main__':
     import sys
+
     sys.exit(main())  # sys.argv))

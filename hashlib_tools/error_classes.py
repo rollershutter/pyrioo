@@ -15,6 +15,7 @@ class Error(Exception):
 
 class VerbosErr(Error):
     """Exception raised for situations where a verbose error info needed.
+
     Attributes:
         expression -- input expression in which the error occurred
         message -- explanation of the error

@@ -11,29 +11,27 @@
 #  author: sebastian rollershutter
 ##
 import hashlib
-fallback_message = "select_hashlib - _hash_method_from(method_string): " \
-                 + "error\ncalled with: %s - fallback to: %s!"
+#fallback_message = "select_hashlib - _hash_method_from(method_string): " \
+#                 + "error\ncalled with: %s - fallback to: %s!"
+fallback_message = ("hashlib method selection error\n: "
+                    "called with: %s - fallback to: %s!")
 
 
-####
 def method_short(hash_method):
     """Get method-short-name from given hashlib-method __name__ attribute.
-    Args:
-        hash_method (hashlib-method): hashlib-module to get the short-name from
-    Return:
-        str: short-name of given hashlib-method
+
+    :param hash_method: hashlib-algorithm hash object to get the short-name from
+    :return str: short-name of given hashlib-method
     """
     return hash_method.__name__[8::].lower()
 
 
 def method_from(method_string):
     """Get a hashlib-method from a given name string.
-     defaults to fallback_method: hashlib.md5
 
-    Args:
-        method_string (str):
-    Return:
-        hashlib-method: hashlib-method, hashlib.md5 if no method found from given method_string
+    defaults to fallback_method: hashlib.md5.
+    :param method_string: name of the desired hashlib algorithm
+    :return: hashlib.hash-object, hashlib.md5 if no method found from given method_string
     """
     fallback_method = hashlib.md5
     try:
@@ -45,6 +43,37 @@ def method_from(method_string):
     #   hash_method = fallback_method
     #print("DEBUG:", dir(hash_method), hash_method.__name__[8::]) #.__str__())
     return hash_method
+
+# ####
+# def method_short(hash_method):
+#     """Get method-short-name from given hashlib-method __name__ attribute.
+#     Args:
+#         hash_method (hashlib-method): hashlib-module to get the short-name from
+#     Return:
+#         str: short-name of given hashlib-method
+#     """
+#     return hash_method.__name__[8::].lower()
+#
+#
+# def method_from(method_string):
+#     """Get a hashlib-method from a given name string.
+#      defaults to fallback_method: hashlib.md5
+#
+#     Args:
+#         method_string (str):
+#     Return:
+#         hashlib-method: hashlib-method, hashlib.md5 if no method found from given method_string
+#     """
+#     fallback_method = hashlib.md5
+#     try:
+#         hash_method = getattr(hashlib, method_string.lower())
+#     except: # (AttributeError, TypeError):
+#         print(fallback_message % (method_string, method_short(fallback_method)))
+#         hash_method = fallback_method
+#     #except TypeError:
+#     #   hash_method = fallback_method
+#     #print("DEBUG:", dir(hash_method), hash_method.__name__[8::]) #.__str__())
+#     return hash_method
 
 
 #######################################################################################################################
