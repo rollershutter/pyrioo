@@ -79,6 +79,7 @@ def main():  # args):
                    Foo(({"min": 32.23, "avg": 35.53}, 3, 4)),
                    ]
 
+    # setting nice indentation for output-file:
     file_io.import_export_objects_only_json.INDENT = None  # 2
     for c_obj in object_list:
         export_obj(c_obj, file_name, ComplexEncoder)  # , 'sha256')

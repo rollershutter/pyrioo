@@ -110,3 +110,6 @@ venv.bak/
 *.sha*
 *.mp5
 *.pbkdf2_hmac
+#dev/docu/code
+exportToHTML/
+docs/
